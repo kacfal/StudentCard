@@ -65,13 +65,18 @@ public class MainActivity extends Activity {
          */
         handleIntent(intent);
     }
-
+/**
+*   Tag:  NXP MIRAFE Classic 1k
+ *  Rodzaje:  NfcA, MifareClassic, NdefFormatable
+ *  ID:  33:9F:C3:B5
+ *  ATQA(Answer To reQuest, type A): 0x0004
+ *  SAK(Select AcKnowledge):  0x08
+ *
+* */
 
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
-
-
 
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if(tag == null){
@@ -94,6 +99,12 @@ public class MainActivity extends Activity {
                 for(int i=0; i<techList.length; i++){
                     tagInfo += techList[i] + "\n ";
                 }
+
+                tagInfo += "\nTech describeContents\n";
+                tagInfo += tag.describeContents() + "\n";
+
+                tagInfo += "\nTech hashCode\n";
+                tagInfo += tag.hashCode() + "\n";
 
                 mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",

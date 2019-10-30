@@ -1,7 +1,6 @@
 package com.example.onemoretime;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -74,7 +73,7 @@ public class MainActivity extends Activity {
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if(tag == null){
                 Toast.makeText(this,"Try again.", Toast.LENGTH_SHORT).show();
-                mTextView.setText("tag == null");
+                mTextView.setText(R.string.tag_null);
             }else{
                 TagHandler tagHandler = new TagHandler(tag);
                 String tagInfo = tagHandler.getTagInfo() + "\n";

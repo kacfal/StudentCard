@@ -1,23 +1,23 @@
 package com.example.onemoretime;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
     private TextView mTextView;
-    private NfcAdapter mNfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        NfcAdapter mNfcAdapter;
         mTextView = (TextView) findViewById(R.id.textView_explanation);
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
         }
 
         if (!mNfcAdapter.isEnabled()) {
-            mTextView.setText("NFC is disabled.");
+            mTextView.setText(R.string.disable_nfc);
         } else {
             Toast.makeText(this, "This device support NFC.", Toast.LENGTH_LONG).show();
             mTextView.setText(R.string.explanation);
@@ -66,14 +66,6 @@ public class MainActivity extends Activity {
          */
         handleIntent(intent);
     }
-/**
-*   Tag:  NXP MIRAFE Classic 1k
- *  Rodzaje:  NfcA, MifareClassic, NdefFormatable
- *  ID:  33:9F:C3:B5
- *  ATQA(Answer To reQuest, type A): 0x0004
- *  SAK(Select AcKnowledge):  0x08
- *
-* */
 
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
@@ -102,7 +94,8 @@ public class MainActivity extends Activity {
                 tagInfo += tagHandler.getAtqa() + "\n";
                 tagInfo += "\nATS\n";
                 tagInfo += tagHandler.getAts() + "\n";
-
+                tagInfo += "\nTag Type\n";
+                tagInfo += tagHandler.getTagType(this) + "\n";
 
                 mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",

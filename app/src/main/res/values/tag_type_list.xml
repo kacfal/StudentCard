@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tag_unknown">Unknown</string>
+    <string name="tag_unknown_mf_classic">MIFARE Classic, Unknown</string>
+</resources>

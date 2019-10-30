@@ -1,15 +1,18 @@
 package com.example.onemoretime;
 
 import android.nfc.Tag;
+import android.nfc.tech.IsoDep;
 import android.nfc.tech.NfcA;
 
 public class TagHandler {
     private Tag tag;
     private NfcA nfcA;
+    private IsoDep iso;
 
     public TagHandler(Tag tag){
         this.tag = tag;
         this.nfcA = NfcA.get(tag);
+        this.iso = IsoDep.get(tag);
     }
 
     public String getTagInfo(){
@@ -69,5 +72,16 @@ public class TagHandler {
         byte[] atqaBytes = NfcA.get(tag).getAtqa();
         atqaBytes = new byte[] {atqaBytes[1], atqaBytes[0]};
         return byte2HexString(atqaBytes);
+    }
+
+    public String getAts(){
+        String ats = "-";
+        if (iso != null ) {
+            byte[] atsBytes = iso.getHistoricalBytes();
+            if (atsBytes != null && atsBytes.length > 0) {
+                ats = byte2HexString(atsBytes);
+            }
+        }
+        return ats;
     }
 }

@@ -100,6 +100,9 @@ public class MainActivity extends Activity {
                 tagInfo += tagHandler.getSak() + "\n";
                 tagInfo += "\nATQA\n";
                 tagInfo += tagHandler.getAtqa() + "\n";
+                tagInfo += "\nATS\n";
+                tagInfo += tagHandler.getAts() + "\n";
+
 
                 mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",

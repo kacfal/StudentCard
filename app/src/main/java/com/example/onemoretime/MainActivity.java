@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,28 +84,22 @@ public class MainActivity extends Activity {
                 Toast.makeText(this,"Try again.", Toast.LENGTH_SHORT).show();
                 mTextView.setText("tag == null");
             }else{
-                String tagInfo = tag.toString() + "\n";
-
+                TagHandler tagHandler = new TagHandler(tag);
+                String tagInfo = tagHandler.getTagInfo() + "\n";
                 tagInfo += "\nTag Id: \n";
-                byte[] tagId = tag.getId();
-                tagInfo += "length = " + tagId.length +"\n";
-                for(int i=0; i<tagId.length; i++){
-                    tagInfo += Integer.toHexString(tagId[i] & 0xFF) + " ";
-                }
-                tagInfo += "\n";
-
-                String[] techList = tag.getTechList();
+                tagInfo += "length = " + tagHandler.getTagIDLength() +"\n";
+                tagInfo += tagHandler.getTagID() + "\n";
                 tagInfo += "\nTech List\n";
-                tagInfo += "length = " + techList.length +"\n";
-                for(int i=0; i<techList.length; i++){
-                    tagInfo += techList[i] + "\n ";
-                }
-
-                tagInfo += "\nTech describeContents\n";
-                tagInfo += tag.describeContents() + "\n";
-
-                tagInfo += "\nTech hashCode\n";
-                tagInfo += tag.hashCode() + "\n";
+                tagInfo += "length = " + tagHandler.getTechListLength() +"\n";
+                tagInfo += tagHandler.getTechList() + "\n" ;
+                tagInfo += "\nDescribeContents\n";
+                tagInfo += tagHandler.getDescribeContents() + "\n";
+                tagInfo += "\nHashCode\n";
+                tagInfo += tagHandler.getHashCode() + "\n";
+                tagInfo += "\nSAK\n";
+                tagInfo += tagHandler.getSak() + "\n";
+                tagInfo += "\nATQA\n";
+                tagInfo += tagHandler.getAtqa() + "\n";
 
                 mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",

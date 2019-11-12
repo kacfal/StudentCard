@@ -3,4 +3,7 @@
     <string name="explanation">Oh good, I am working</string>
     <string name="disable_nfc">NFC is disabled.</string>
     <string name="tag_null">Tag is null.</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -1,3 +1,6 @@
+##1.3
+#Update Sing Up screen
+
 ##1.2
 #Add Login Activity
 #Add Sing Up Activity

@@ -101,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
+        Intent anotherIntent = new Intent(this, NfcActivity.class);
+        startActivity(anotherIntent);
         _loginButton.setEnabled(true);
         finish();
     }

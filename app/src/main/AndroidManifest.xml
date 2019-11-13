@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".LoginActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name=".SignupActivity" android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".NfcActivity" />
 
         <activity-alias
             android:name=".MainActivity"

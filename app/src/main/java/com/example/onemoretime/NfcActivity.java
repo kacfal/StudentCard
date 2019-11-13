@@ -121,7 +121,7 @@ public class NfcActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
             Toast.makeText(this, "Logout",
                     Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, LoginActivity.class);

@@ -1,9 +1,13 @@
 package com.example.onemoretime;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -18,15 +22,35 @@ public class NfcActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
+        this.registerReceiver(mReceiver, filter);
+        handleIntent(getIntent());
+    }
 
-        NfcAdapter mNfcAdapter;
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE,
+                        NfcAdapter.STATE_OFF);
+                switch (state) {
+                    case NfcAdapter.STATE_OFF:
+                        mTextView.setText(R.string.disable_nfc);
+                    case NfcAdapter.STATE_ON:
+                        mTextView.setText(R.string.enable_nfc);
+                }
+            }
+        }
+    };
+
+    private void nfcDetected(){
         mTextView = (TextView) findViewById(R.id.textView_explanation);
-
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (mNfcAdapter == null) {
             Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            finish();
             return;
         }
 
@@ -34,9 +58,8 @@ public class NfcActivity extends AppCompatActivity {
             mTextView.setText(R.string.disable_nfc);
         } else {
             Toast.makeText(this, "This device support NFC.", Toast.LENGTH_LONG).show();
-            mTextView.setText(R.string.explanation);
+            mTextView.setText(R.string.enable_nfc);
         }
-        handleIntent(getIntent());
     }
 
     @Override
@@ -46,6 +69,7 @@ public class NfcActivity extends AppCompatActivity {
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
          */
+        nfcDetected();
     }
 
     @Override
@@ -59,6 +83,7 @@ public class NfcActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        nfcDetected();
         /**
          * This method gets called, when a new Intent gets associated with the current activity instance.
          * Instead of creating a new activity, onNewIntent will be called. For more information have a look

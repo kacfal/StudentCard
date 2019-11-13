@@ -1,4 +1,7 @@
 # StudentCard
+## 1.4.1
+Add Listening NFC Adapter State
+
 ## 1.4
 Move NfcActivity to separate class and add action logout
 

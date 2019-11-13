@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Student Card App</string>
-    <string name="explanation">Oh good, I am working</string>
+    <string name="enable_nfc">Oh good, I am working</string>
     <string name="disable_nfc">NFC is disabled.</string>
     <string name="tag_null">Tag is null.</string>
 

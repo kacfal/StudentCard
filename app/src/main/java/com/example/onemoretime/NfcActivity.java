@@ -10,21 +10,57 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import butterknife.BindView;
+
 public class NfcActivity extends AppCompatActivity {
     private TextView mTextView;
+    public Tag tag = null;
+
+    @BindView(R.id.btn_nfc_card) Button _nfcCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
         IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
         this.registerReceiver(mReceiver, filter);
-        handleIntent(getIntent());
+    }
+
+    private void chooseContentView(NfcAdapter mNfcAdapter){
+
+        if(tag == null && mNfcAdapter.isEnabled()) {
+            setContentView(R.layout.activity_nfc);
+            _nfcCard = (Button) findViewById(R.id.btn_nfc_card);
+            _nfcCard.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    handleIntent(getIntent());
+                }
+            });
+        }
+        else {
+            setContentView(R.layout.activity_main);
+        }
+    }
+
+    private void nfcDetected(){
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if (!mNfcAdapter.isEnabled()) {
+            Toast.makeText(this, "NFC is disabled.", Toast.LENGTH_LONG).show();
+            chooseContentView(mNfcAdapter);
+        } else {
+            Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
+            chooseContentView(mNfcAdapter);
+        }
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -37,30 +73,15 @@ public class NfcActivity extends AppCompatActivity {
                         NfcAdapter.STATE_OFF);
                 switch (state) {
                     case NfcAdapter.STATE_OFF:
-                        mTextView.setText(R.string.disable_nfc);
+                        Log.d("null", "STATE_OFF");
+                        nfcDetected();
                     case NfcAdapter.STATE_ON:
-                        mTextView.setText(R.string.enable_nfc);
+                        Log.d("null", "STATE_ON");
+                        nfcDetected();
                 }
             }
         }
     };
-
-    private void nfcDetected(){
-        mTextView = (TextView) findViewById(R.id.textView_explanation);
-        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
-        if (mNfcAdapter == null) {
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (!mNfcAdapter.isEnabled()) {
-            mTextView.setText(R.string.disable_nfc);
-        } else {
-            Toast.makeText(this, "This device support NFC.", Toast.LENGTH_LONG).show();
-            mTextView.setText(R.string.enable_nfc);
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -69,7 +90,7 @@ public class NfcActivity extends AppCompatActivity {
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
          */
-        nfcDetected();
+            nfcDetected();
     }
 
     @Override
@@ -83,7 +104,6 @@ public class NfcActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        nfcDetected();
         /**
          * This method gets called, when a new Intent gets associated with the current activity instance.
          * Instead of creating a new activity, onNewIntent will be called. For more information have a look
@@ -91,18 +111,20 @@ public class NfcActivity extends AppCompatActivity {
          *
          * In our case this method gets called, when the user attaches a Tag to the device.
          */
-        handleIntent(intent);
+//        handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
 
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if(tag == null){
                 Toast.makeText(this,"Try again.", Toast.LENGTH_SHORT).show();
-                mTextView.setText(R.string.tag_null);
             }else{
+                setContentView(R.layout.activity_main);
+                mTextView = (TextView) findViewById(R.id.textView_explanation);
+
                 TagHandler tagHandler = new TagHandler(tag);
                 String tagInfo = tagHandler.getTagInfo() + "\n";
                 tagInfo += "\nTag Id: \n";
@@ -123,7 +145,6 @@ public class NfcActivity extends AppCompatActivity {
                 tagInfo += tagHandler.getAts() + "\n";
                 tagInfo += "\nTag Type\n";
                 tagInfo += tagHandler.getTagType(this) + "\n";
-
                 mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",
                         Toast.LENGTH_SHORT).show();

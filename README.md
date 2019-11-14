@@ -1,4 +1,7 @@
 # StudentCard
+## 1.4.2
+Add method witch change layout when NFC is disabled or enabled
+
 ## 1.4.1
 Add Listening NFC Adapter State
 

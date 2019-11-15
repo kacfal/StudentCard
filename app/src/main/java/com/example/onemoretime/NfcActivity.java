@@ -27,6 +27,7 @@ import butterknife.BindView;
 
 public class NfcActivity extends AppCompatActivity {
     private TextView mTextView;
+    private boolean readTag = true;
     public Tag tag = null;
 
     @BindView(R.id.btn_nfc_card) Button _nfcCard;
@@ -112,7 +113,9 @@ public class NfcActivity extends AppCompatActivity {
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
          */
+        if(readTag) {
             enableNfcForegroundDispatch();
+        }
     }
 
     @Override
@@ -141,7 +144,8 @@ public class NfcActivity extends AppCompatActivity {
     private void handleIntent(Intent intent) {
 
         String action = intent.getAction();
-        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
+        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) ) {
 
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Log.d("tag", " "+ tag);
@@ -175,6 +179,7 @@ public class NfcActivity extends AppCompatActivity {
                 mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",
                         Toast.LENGTH_SHORT).show();
+                readTag = false;
             }
         }
     }

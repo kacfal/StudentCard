@@ -1,4 +1,8 @@
 # StudentCard
+## 1.5
+Add NfcActivity layout
+Fix bug with read nfc TAG
+
 ## 1.4.2
 Add method witch change layout when NFC is disabled or enabled
 

@@ -1,22 +1,22 @@
 # StudentCard
 ## 1.5
-Add NfcActivity layout
-Fix bug with read nfc TAG
+- Add NfcActivity layout
+- Fix bug with read nfc TAG
 
 ## 1.4.2
-Add method witch change layout when NFC is disabled or enabled
+- Add method witch change layout when NFC is disabled or enabled
 
 ## 1.4.1
-Add Listening NFC Adapter State
+- Add Listening NFC Adapter State
 
 ## 1.4
-Move NfcActivity to separate class and add action logout
+- Move NfcActivity to separate class and add action logout
 
 ## 1.3 
-Update Sing Up screen
+- Update Sing Up screen
 
 ## 1.2 
-Add Login Activity #Add Sing Up Activity
+- Add Login Activity #Add Sing Up Activity
 
 ## 1.1 
-Add Read NFC TAG
+- Add Read NFC TAG

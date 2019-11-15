@@ -66,20 +66,20 @@ public class NfcActivity extends AppCompatActivity {
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
+        final String action = intent.getAction();
 
-            if (action.equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE,
-                        NfcAdapter.STATE_OFF);
-                switch (state) {
-                    case NfcAdapter.STATE_OFF:
-                        Log.d("null", "STATE_OFF");
-                        nfcDetected();
-                    case NfcAdapter.STATE_ON:
-                        Log.d("null", "STATE_ON");
-                        nfcDetected();
-                }
+        if (action.equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)) {
+            final int state = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE,
+                    NfcAdapter.STATE_OFF);
+            switch (state) {
+                case NfcAdapter.STATE_OFF:
+                    Log.d("null", "STATE_OFF");
+                    nfcDetected();
+                case NfcAdapter.STATE_ON:
+                    Log.d("null", "STATE_ON");
+                    nfcDetected();
             }
+        }
         }
     };
 
@@ -111,7 +111,6 @@ public class NfcActivity extends AppCompatActivity {
          *
          * In our case this method gets called, when the user attaches a Tag to the device.
          */
-//        handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {

@@ -3,8 +3,6 @@
     package="com.example.onemoretime">
 
     <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -26,11 +24,11 @@
         </activity>
         <activity android:name=".LoginActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name=".SignupActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".NfcActivity" />
+        <activity android:name=".NfcActivity" android:theme="@style/AppTheme.Dark"/>
 
         <activity-alias
-            android:name=".MainActivity"
-            android:targetActivity=".MainActivity">
+            android:name=".NfcActivity"
+            android:targetActivity=".NfcActivity">
             <intent-filter>
             <action android:name="android.nfc.action.TAG_DISCOVERED" />
             <category android:name="android.intent.category.DEFAULT" />
@@ -38,6 +36,8 @@
 
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/nfc_tech_filter" /></activity-alias>
+                android:resource="@xml/nfc_tech_filter" />
+        </activity-alias>
     </application>
+
 </manifest>

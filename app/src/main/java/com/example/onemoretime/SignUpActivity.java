@@ -18,6 +18,8 @@ public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
 
     @BindView(R.id.input_name) EditText nameText;
+    @BindView(R.id.input_last_name) EditText lastNameText;
+    @BindView(R.id.input_name) EditText indexText;
     @BindView(R.id.input_email) EditText emailText;
     @BindView(R.id.input_password) EditText passwordText;
     @BindView(R.id.btn_signup) Button signupButton;
@@ -66,6 +68,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         String name = nameText.getText().toString();
+        String lastName = lastNameText.getText().toString();
+        String index = indexText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
@@ -100,10 +104,14 @@ public class SignUpActivity extends AppCompatActivity {
         boolean valid = true;
 
         nameText = (EditText) findViewById(R.id.input_name);
+        lastNameText = (EditText) findViewById(R.id.input_last_name);
+        indexText = (EditText) findViewById(R.id.input_index);
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
 
         String name = nameText.getText().toString();
+        String lastName = lastNameText.getText().toString();
+        String index = indexText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
@@ -112,6 +120,20 @@ public class SignUpActivity extends AppCompatActivity {
             valid = false;
         } else {
             nameText.setError(null);
+        }
+
+        if (lastName.isEmpty() || lastName.length() < 3) {
+            lastNameText.setError("at least 3 characters");
+            valid = false;
+        } else {
+            lastNameText.setError(null);
+        }
+
+        if (index.isEmpty() || index.length() == 6) {
+            indexText.setError("Exactly 6 characters");
+            valid = false;
+        } else {
+            indexText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

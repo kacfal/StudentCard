@@ -8,16 +8,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.onemoretime.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
+
+    RequestQueue requestQueue;
+    String name;
+    String lastName;
+    String index;
+    String email;
+    String password;
 
     @BindView(R.id.input_name) EditText nameText;
     @BindView(R.id.input_last_name) EditText lastNameText;
@@ -67,14 +81,6 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-
-
-        String name = nameText.getText().toString();
-        String lastName = lastNameText.getText().toString();
-        String index = indexText.getText().toString();
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-
         // TODO: Implement signup logic here.
 
         new android.os.Handler().postDelayed(
@@ -93,11 +99,12 @@ public class SignUpActivity extends AppCompatActivity {
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        registerUser();
         finish();
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Sing up failed", Toast.LENGTH_LONG).show();
 
         signupButton.setEnabled(true);
     }
@@ -111,11 +118,11 @@ public class SignUpActivity extends AppCompatActivity {
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
 
-        String name = nameText.getText().toString();
-        String lastName = lastNameText.getText().toString();
-        String index = indexText.getText().toString();
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        name = nameText.getText().toString();
+        lastName = lastNameText.getText().toString();
+        index = indexText.getText().toString();
+        email = emailText.getText().toString();
+        password = passwordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             nameText.setError("at least 3 characters");
@@ -153,5 +160,36 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    public void registerUser() {
+        String baseUrl="http://127.0.0.1:8000/api/users/";
+        String uid = "12312asd3";
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("username", index);
+            json.put("email", email);
+            json.put("first_name", name);
+            json.put("last_name", lastName);
+            json.put("uid", uid);
+            json.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, baseUrl, json,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Response: ", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error: ", error.toString());
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 }

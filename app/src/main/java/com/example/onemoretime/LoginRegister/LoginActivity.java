@@ -1,4 +1,4 @@
-package com.example.onemoretime;
+package com.example.onemoretime.LoginRegister;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.onemoretime.Nfc.NfcActivity;
+import com.example.onemoretime.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,9 +1,11 @@
-package com.example.onemoretime;
+package com.example.onemoretime.Nfc;
 
 import android.content.Context;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.NfcA;
+
+import com.example.onemoretime.R;
 
 public class TagHandler {
     private Tag tag;

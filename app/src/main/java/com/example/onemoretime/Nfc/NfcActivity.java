@@ -1,4 +1,4 @@
-package com.example.onemoretime;
+package com.example.onemoretime.Nfc;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.onemoretime.LoginRegister.LoginActivity;
+import com.example.onemoretime.R;
 
 import butterknife.BindView;
 

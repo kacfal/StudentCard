@@ -14,13 +14,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.toolbox.Volley;
 import com.example.onemoretime.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -83,40 +80,39 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        // TODO: Implement signup logic here.
+        String baseUrl="http://192.168.0.107:8000/api/users/";
+        JSONObject json = new JSONObject();
 
+        try {
+            json.put("username", index);
+            json.put("email", email);
+            json.put("first_name", name);
+            json.put("last_name", lastName);
+            json.put("uid", uid);
+            json.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, baseUrl, json,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Response: ", response.toString());
+                        onSignupSuccess();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onSignupFailed();
+                Log.e("Error: ", error.toString());
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        String baseUrl="http://192.168.0.107:8000/api/users/";
-                        JSONObject json = new JSONObject();
 
-                        try {
-                            json.put("username", index);
-                            json.put("email", email);
-                            json.put("first_name", name);
-                            json.put("last_name", lastName);
-                            json.put("uid", uid);
-                            json.put("password", password);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, baseUrl, json,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        Log.e("Response: ", response.toString());
-                                        onSignupSuccess();
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                onSignupFailed();
-                                Log.e("Error: ", error.toString());
-                            }
-                        });
-                        requestQueue.add(jsonObjectRequest);
                         progressDialog.dismiss();
                     }
                 }, 60);

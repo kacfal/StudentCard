@@ -9,12 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.onemoretime.Nfc.NfcActivity;
 import com.example.onemoretime.R;
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -22,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
+    RequestQueue requestQueue;
     @BindView(R.id.input_email) EditText emailText;
     @BindView(R.id.input_password) EditText passwordText;
     @BindView(R.id.btn_login) Button loginButton;
@@ -32,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        requestQueue = Volley.newRequestQueue(this);
 
         loginButton = (Button) findViewById(R.id.btn_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +80,36 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        // TODO: Implement authentication logic here.
+        String baseUrl = "http://192.168.0.107:8000/api/users/";
+        JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, baseUrl, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if (response.length() > 0) {
+                            try {
+                                JSONObject jsonObj = response.getJSONObject(0);
+                                String username = jsonObj.get("username").toString();
+                                String email = jsonObj.get("email").toString();
+                                String first_name = jsonObj.get("first_name").toString();
+                                String last_name = jsonObj.get("last_name").toString();
+                                String uid = jsonObj.get("uid").toString();
+                                Log.d("Full", " " + response);
+
+                                Log.d("Response: ", " "+ username + " " + email + " " + first_name + " " + last_name + " "+ uid);
+                            } catch (JSONException e) {
+                                Log.e("Error: ", "Invalid JSON Object.");
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error: ", error.toString());
+                    }
+                }
+        );
+        requestQueue.add(arrReq);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -82,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 300);
     }
 
     @Override

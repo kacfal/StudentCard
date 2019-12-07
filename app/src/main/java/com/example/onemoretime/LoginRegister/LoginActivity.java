@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         String index = indexText.getText().toString();
         String password = passwordText.getText().toString();
 
-        String baseUrl="http://192.168.0.107:8000/api/v1/rest-auth/registration/";
+        String baseUrl="http://192.168.0.107:8000/api/v1/rest-auth/login/";
         JSONObject json = new JSONObject();
 
         try {

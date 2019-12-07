@@ -80,7 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String baseUrl="http://192.168.0.107:8000/api/users/";
+        String baseUrl="http://192.168.0.107:8000/api/v1/rest-auth/registration/";
         JSONObject json = new JSONObject();
 
         try {
@@ -89,7 +89,8 @@ public class SignUpActivity extends AppCompatActivity {
             json.put("first_name", name);
             json.put("last_name", lastName);
             json.put("uid", uid);
-            json.put("password", password);
+            json.put("password1", password);
+            json.put("password2", password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -180,6 +181,8 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             passwordText.setError(null);
         }
+
+
         return valid;
     }
 }

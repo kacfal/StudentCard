@@ -9,18 +9,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.onemoretime.Nfc.NfcActivity;
 import com.example.onemoretime.R;
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -29,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
 
     RequestQueue requestQueue;
-    @BindView(R.id.input_email) EditText emailText;
+    @BindView(R.id.input_index) EditText indexText;
     @BindView(R.id.input_password) EditText passwordText;
     @BindView(R.id.btn_login) Button loginButton;
     @BindView(R.id.link_signup) TextView signupLink;
@@ -77,39 +80,33 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = emailText.getText().toString();
+        String index = indexText.getText().toString();
         String password = passwordText.getText().toString();
 
-        String baseUrl = "http://192.168.0.107:8000/api/users/";
-        JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, baseUrl, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        if (response.length() > 0) {
-                            try {
-                                JSONObject jsonObj = response.getJSONObject(0);
-                                String username = jsonObj.get("username").toString();
-                                String email = jsonObj.get("email").toString();
-                                String first_name = jsonObj.get("first_name").toString();
-                                String last_name = jsonObj.get("last_name").toString();
-                                String uid = jsonObj.get("uid").toString();
-                                Log.d("Full", " " + response);
+        String baseUrl="http://192.168.0.107:8000/api/v1/rest-auth/registration/";
+        JSONObject json = new JSONObject();
 
-                                Log.d("Response: ", " "+ username + " " + email + " " + first_name + " " + last_name + " "+ uid);
-                            } catch (JSONException e) {
-                                Log.e("Error: ", "Invalid JSON Object.");
-                            }
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
+        try {
+            json.put("username", index);
+            json.put("password2", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, baseUrl, json,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Error: ", error.toString());
+                    public void onResponse(JSONObject response) {
+                        Log.e("Response: ", response.toString());
+                        onLoginSuccess();
                     }
-                }
-        );
-        requestQueue.add(arrReq);
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onLoginFailed();
+                Log.e("Error: ", error.toString());
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -119,20 +116,20 @@ public class LoginActivity extends AppCompatActivity {
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
-                }, 300);
+                }, 3000);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_SIGNUP) {
+//            if (resultCode == RESULT_OK) {
+//
+//                // TODO: Implement successful signup logic here
+//                // By default we just finish the Activity and log them in automatically
+//                this.finish();
+//            }
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -155,17 +152,17 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean validate() {
         boolean valid = true;
-        emailText = (EditText) findViewById(R.id.input_email);
+        indexText = (EditText) findViewById(R.id.input_index);
         passwordText = (EditText) findViewById(R.id.input_password);
 
-        String email = emailText.getText().toString();
+        String index = indexText.getText().toString();
         String password = passwordText.getText().toString();
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailText.setError("enter a valid email address");
+        if (index.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(index).matches()) {
+            indexText.setError("enter a valid email address");
             valid = false;
         } else {
-            emailText.setError(null);
+            indexText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {

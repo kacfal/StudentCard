@@ -1,6 +1,8 @@
 package com.example.onemoretime.LoginRegister;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.toolbox.Volley;
+import com.example.onemoretime.Nfc.NfcActivity;
 import com.example.onemoretime.R;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     String index;
     String email;
     String password;
-    String uid = "test dupa 12123123";
+    String uid;
 
     @BindView(R.id.input_name) EditText nameText;
     @BindView(R.id.input_last_name) EditText lastNameText;
@@ -39,6 +42,8 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.input_password) EditText passwordText;
     @BindView(R.id.btn_signup) Button signupButton;
     @BindView(R.id.link_login) TextView loginLink;
+    @BindView(R.id.btn_student_card) Button studentCard;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,15 @@ public class SignUpActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
 
         ButterKnife.bind(this);
+
+        studentCard = (Button) findViewById(R.id.btn_student_card);
+        studentCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignUpActivity.this, NfcActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
 
         signupButton = (Button) findViewById(R.id.btn_signup);
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +78,21 @@ public class SignUpActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Tag tag = data.getParcelableExtra("tag");
+                Log.e("Response: ", "" + tag);
+            }
+            if (resultCode == RESULT_CANCELED) {
+                Log.e("Response: ", "Nothing selected");
+            }
+        }
     }
 
     public void signup() {
@@ -183,6 +212,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             passwordText.setError(null);
         }
+
 
 
         return valid;

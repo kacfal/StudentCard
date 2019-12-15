@@ -16,24 +16,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.onemoretime.LoginRegister.LoginActivity;
 import com.example.onemoretime.R;
 
-import butterknife.BindView;
 
 public class NfcActivity extends AppCompatActivity {
-    private TextView mTextView;
     private boolean readTag = true;
     public Tag tag = null;
 
-    @BindView(R.id.btn_nfc_card) Button _nfcCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +39,6 @@ public class NfcActivity extends AppCompatActivity {
 
         if(tag == null && mNfcAdapter.isEnabled()) {
             setContentView(R.layout.activity_nfc);
-            _nfcCard = (Button) findViewById(R.id.btn_nfc_card);
-            _nfcCard.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
         }
         else {
             setContentView(R.layout.activity_main);
@@ -144,6 +128,14 @@ public class NfcActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    @Override
+    protected void onStop()
+    {
+        unregisterReceiver(mReceiver);
+        super.onStop();
+    }
+
+
     private void handleIntent(Intent intent) {
 
         String action = intent.getAction();
@@ -153,36 +145,18 @@ public class NfcActivity extends AppCompatActivity {
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             Log.d("tag", " "+ tag);
 
+
             if(tag == null){
                 Toast.makeText(this,"Try again.", Toast.LENGTH_SHORT).show();
             }else{
-                setContentView(R.layout.activity_main);
-                mTextView = (TextView) findViewById(R.id.textView_explanation);
+                Intent intent1 = new Intent();
 
-                TagHandler tagHandler = new TagHandler(tag);
-                String tagInfo = tagHandler.getTagInfo() + "\n";
-                tagInfo += "\nTag Id: \n";
-                tagInfo += "length = " + tagHandler.getTagIDLength() +"\n";
-                tagInfo += tagHandler.getTagID() + "\n";
-                tagInfo += "\nTech List\n";
-                tagInfo += "length = " + tagHandler.getTechListLength() +"\n";
-                tagInfo += tagHandler.getTechList() + "\n" ;
-                tagInfo += "\nDescribeContents\n";
-                tagInfo += tagHandler.getDescribeContents() + "\n";
-                tagInfo += "\nHashCode\n";
-                tagInfo += tagHandler.getHashCode() + "\n";
-                tagInfo += "\nSAK\n";
-                tagInfo += tagHandler.getSak() + "\n";
-                tagInfo += "\nATQA\n";
-                tagInfo += tagHandler.getAtqa() + "\n";
-                tagInfo += "\nATS\n";
-                tagInfo += tagHandler.getAts() + "\n";
-                tagInfo += "\nTag Type\n";
-                tagInfo += tagHandler.getTagType(this) + "\n";
-                mTextView.setText(tagInfo);
+                intent1.putExtra("tag", tag);
+                setResult(RESULT_OK , intent1);
                 Toast.makeText(this, "Student Card was registered.",
                         Toast.LENGTH_SHORT).show();
                 readTag = false;
+                finish();
             }
         }
     }

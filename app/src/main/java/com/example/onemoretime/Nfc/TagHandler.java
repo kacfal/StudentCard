@@ -42,7 +42,7 @@ public class TagHandler {
         byte[] tagId = tag.getId();
         String id = "";
         for(int i=0; i<getTagIDLength(); i++){
-            id += Integer.toHexString(tagId[i] & 0xFF) + " ";
+            id += Integer.toHexString(tagId[i] & 0xFF) + "";
         }
         return id;
     }

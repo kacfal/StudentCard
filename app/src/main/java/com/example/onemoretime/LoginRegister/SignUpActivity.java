@@ -30,7 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
     String index;
     String email;
     String password;
-    String uid;
+    String uid = "test dupa 12123123";
 
     @BindView(R.id.input_name) EditText nameText;
     @BindView(R.id.input_last_name) EditText lastNameText;
@@ -80,7 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String baseUrl="http://192.168.0.107:8000/api/v1/rest-auth/registration/";
+        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/registration/";
         JSONObject json = new JSONObject();
 
         try {
@@ -106,6 +106,8 @@ public class SignUpActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 onSignupFailed();
                 Log.e("Error: ", error.toString());
+                Log.e("json: ", json.toString());
+
             }
         });
         requestQueue.add(jsonObjectRequest);

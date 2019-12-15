@@ -83,12 +83,12 @@ public class LoginActivity extends AppCompatActivity {
         String index = indexText.getText().toString();
         String password = passwordText.getText().toString();
 
-        String baseUrl="http://192.168.0.107:8000/api/v1/rest-auth/login/";
+        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/login/";
         JSONObject json = new JSONObject();
 
         try {
             json.put("username", index);
-            json.put("password2", password);
+            json.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -104,6 +104,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 onLoginFailed();
                 Log.e("Error: ", error.toString());
+                Log.e("json: ", json.toString());
+
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -111,12 +113,9 @@ public class LoginActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 60);
     }
 
 //    @Override
@@ -158,8 +157,8 @@ public class LoginActivity extends AppCompatActivity {
         String index = indexText.getText().toString();
         String password = passwordText.getText().toString();
 
-        if (index.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(index).matches()) {
-            indexText.setError("enter a valid email address");
+        if (index.isEmpty() || index.length() == 7) {
+            indexText.setError("enter a valid index");
             valid = false;
         } else {
             indexText.setError(null);

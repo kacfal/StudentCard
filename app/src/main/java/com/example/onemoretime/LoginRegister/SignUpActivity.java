@@ -86,8 +86,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                Tag tag = data.getParcelableExtra("tag");
-                Log.e("Response: ", "" + tag);
+                uid = data.getStringExtra("tag");
+                Log.e("Response: ", "" + uid);
             }
             if (resultCode == RESULT_CANCELED) {
                 Log.e("Response: ", "Nothing selected");

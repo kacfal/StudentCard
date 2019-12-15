@@ -150,9 +150,31 @@ public class NfcActivity extends AppCompatActivity {
                 Toast.makeText(this,"Try again.", Toast.LENGTH_SHORT).show();
             }else{
                 Intent intent1 = new Intent();
+                TagHandler tagHandler = new TagHandler(tag);
 
-                intent1.putExtra("tag", tag);
+                intent1.putExtra("tag", tagHandler.getTagID());
                 setResult(RESULT_OK , intent1);
+
+//                String tagInfo = tagHandler.getTagInfo() + "\n";
+//                tagInfo += "\nTag Id: \n";
+//                tagInfo += "length = " + tagHandler.getTagIDLength() +"\n";
+//                tagInfo += tagHandler.getTagID() + "\n";
+//                tagInfo += "\nTech List\n";
+//                tagInfo += "length = " + tagHandler.getTechListLength() +"\n";
+//                tagInfo += tagHandler.getTechList() + "\n" ;
+//                tagInfo += "\nDescribeContents\n";
+//                tagInfo += tagHandler.getDescribeContents() + "\n";
+//                tagInfo += "\nHashCode\n";
+//                tagInfo += tagHandler.getHashCode() + "\n";
+//                tagInfo += "\nSAK\n";
+//                tagInfo += tagHandler.getSak() + "\n";
+//                tagInfo += "\nATQA\n";
+//                tagInfo += tagHandler.getAtqa() + "\n";
+//                tagInfo += "\nATS\n";
+//                tagInfo += tagHandler.getAts() + "\n";
+//                tagInfo += "\nTag Type\n";
+//                tagInfo += tagHandler.getTagType(this) + "\n";
+//                mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",
                         Toast.LENGTH_SHORT).show();
                 readTag = false;

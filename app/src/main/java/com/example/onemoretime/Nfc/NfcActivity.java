@@ -14,11 +14,8 @@ import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.onemoretime.LoginRegister.LoginActivity;
 import com.example.onemoretime.R;
 
 
@@ -155,26 +152,6 @@ public class NfcActivity extends AppCompatActivity {
                 intent1.putExtra("tag", tagHandler.getTagID());
                 setResult(RESULT_OK , intent1);
 
-//                String tagInfo = tagHandler.getTagInfo() + "\n";
-//                tagInfo += "\nTag Id: \n";
-//                tagInfo += "length = " + tagHandler.getTagIDLength() +"\n";
-//                tagInfo += tagHandler.getTagID() + "\n";
-//                tagInfo += "\nTech List\n";
-//                tagInfo += "length = " + tagHandler.getTechListLength() +"\n";
-//                tagInfo += tagHandler.getTechList() + "\n" ;
-//                tagInfo += "\nDescribeContents\n";
-//                tagInfo += tagHandler.getDescribeContents() + "\n";
-//                tagInfo += "\nHashCode\n";
-//                tagInfo += tagHandler.getHashCode() + "\n";
-//                tagInfo += "\nSAK\n";
-//                tagInfo += tagHandler.getSak() + "\n";
-//                tagInfo += "\nATQA\n";
-//                tagInfo += tagHandler.getAtqa() + "\n";
-//                tagInfo += "\nATS\n";
-//                tagInfo += tagHandler.getAts() + "\n";
-//                tagInfo += "\nTag Type\n";
-//                tagInfo += tagHandler.getTagType(this) + "\n";
-//                mTextView.setText(tagInfo);
                 Toast.makeText(this, "Student Card was registered.",
                         Toast.LENGTH_SHORT).show();
                 readTag = false;
@@ -183,28 +160,4 @@ public class NfcActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            Toast.makeText(this, "Logout",
-                    Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

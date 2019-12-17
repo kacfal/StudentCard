@@ -18,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.onemoretime.Nfc.NfcActivity;
+import com.example.onemoretime.MainActivity;
 import com.example.onemoretime.R;
 
 import org.json.JSONException;
@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        Intent anotherIntent = new Intent(this, NfcActivity.class);
+        Intent anotherIntent = new Intent(this, MainActivity.class);
         startActivity(anotherIntent);
         loginButton.setEnabled(true);
         finish();

@@ -2,7 +2,6 @@ package com.example.onemoretime.LoginRegister;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,23 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.toolbox.Volley;
 import com.example.onemoretime.Nfc.NfcActivity;
 import com.example.onemoretime.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
-    private static final String TAG = "SignUpActivity";
-
     RequestQueue requestQueue;
     String name;
     String lastName;
@@ -43,7 +44,6 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.btn_signup) Button signupButton;
     @BindView(R.id.link_login) TextView loginLink;
     @BindView(R.id.btn_student_card) Button studentCard;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -213,8 +213,11 @@ public class SignUpActivity extends AppCompatActivity {
             passwordText.setError(null);
         }
 
-
-
+        if (uid.isEmpty()) {
+            valid = false;
+            Toast.makeText(this, "You have to register your Student Card.",
+                    Toast.LENGTH_SHORT).show();
+        }
         return valid;
     }
 }

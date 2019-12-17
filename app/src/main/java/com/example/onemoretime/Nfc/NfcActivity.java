@@ -18,42 +18,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.onemoretime.R;
 
-
 public class NfcActivity extends AppCompatActivity {
-    private boolean readTag = true;
     public Tag tag = null;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        nfcDetected();
-        IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
-        this.registerReceiver(mReceiver, filter);
-    }
-
-    private void chooseContentView(NfcAdapter mNfcAdapter){
-
-        if(tag == null && mNfcAdapter.isEnabled()) {
-            setContentView(R.layout.activity_nfc);
-        }
-        else {
-            setContentView(R.layout.activity_main);
-        }
-    }
-
-    private void nfcDetected(){
-        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
-        if (!mNfcAdapter.isEnabled()) {
-            Toast.makeText(this, "NFC is disabled.", Toast.LENGTH_LONG).show();
-            chooseContentView(mNfcAdapter);
-        } else {
-            Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
-            chooseContentView(mNfcAdapter);
-        }
-    }
-
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -73,21 +39,51 @@ public class NfcActivity extends AppCompatActivity {
             }
         }
     };
+    private boolean readTag = true;
 
-    private void enableNfcForegroundDispatch(){
-        String[][] techList = new String[][] {
-                new String[] { NfcA.class.getName() },
-                new String[] { NfcB.class.getName() },
-                new String[] { NfcF.class.getName() },
-                new String[] { NfcV.class.getName() },
-                new String[] { NfcBarcode.class.getName() },
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        nfcDetected();
+        IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
+        this.registerReceiver(mReceiver, filter);
+    }
+
+    private void chooseContentView(NfcAdapter mNfcAdapter) {
+
+        if (tag == null && mNfcAdapter.isEnabled()) {
+            setContentView(R.layout.activity_nfc);
+        } else {
+            setContentView(R.layout.activity_main);
+        }
+    }
+
+    private void nfcDetected() {
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if (!mNfcAdapter.isEnabled()) {
+            Toast.makeText(this, "NFC is disabled.", Toast.LENGTH_LONG).show();
+            chooseContentView(mNfcAdapter);
+        } else {
+            Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
+            chooseContentView(mNfcAdapter);
+        }
+    }
+
+    private void enableNfcForegroundDispatch() {
+        String[][] techList = new String[][]{
+                new String[]{NfcA.class.getName()},
+                new String[]{NfcB.class.getName()},
+                new String[]{NfcF.class.getName()},
+                new String[]{NfcV.class.getName()},
+                new String[]{NfcBarcode.class.getName()},
         };
 
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[] {new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED), new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)}, techList);
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED), new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)}, techList);
     }
 
     @Override
@@ -97,7 +93,7 @@ public class NfcActivity extends AppCompatActivity {
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
          */
-        if(readTag) {
+        if (readTag) {
             enableNfcForegroundDispatch();
         }
     }
@@ -126,31 +122,26 @@ public class NfcActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         unregisterReceiver(mReceiver);
         super.onStop();
     }
-
 
     private void handleIntent(Intent intent) {
 
         String action = intent.getAction();
         if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
-                || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) ) {
-
+                || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            Log.d("tag", " "+ tag);
 
-
-            if(tag == null){
-                Toast.makeText(this,"Try again.", Toast.LENGTH_SHORT).show();
-            }else{
+            if (tag == null) {
+                Toast.makeText(this, "Try again.", Toast.LENGTH_SHORT).show();
+            } else {
                 Intent intent1 = new Intent();
                 TagHandler tagHandler = new TagHandler(tag);
 
                 intent1.putExtra("tag", tagHandler.getTagID());
-                setResult(RESULT_OK , intent1);
+                setResult(RESULT_OK, intent1);
 
                 Toast.makeText(this, "Student Card was registered.",
                         Toast.LENGTH_SHORT).show();

@@ -137,8 +137,8 @@ public class NfcActivity extends AppCompatActivity {
             if (tag == null) {
                 Toast.makeText(this, "Try again.", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent1 = new Intent();
                 TagHandler tagHandler = new TagHandler(tag);
+                Intent intent1 = new Intent();
 
                 intent1.putExtra("tag", tagHandler.getTagID());
                 setResult(RESULT_OK, intent1);

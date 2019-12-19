@@ -96,6 +96,14 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Intent intentResponse = new Intent();
+
+                        try {
+                            intentResponse.putExtra("token", response.getString("key"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        setResult(RESULT_OK, intentResponse);
                         Log.e("Response: ", response.toString());
                         onLoginSuccess();
                     }
@@ -138,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         Intent anotherIntent = new Intent(this, MainActivity.class);
-        startActivity(anotherIntent);
+        startActivityForResult(anotherIntent, 1);
         loginButton.setEnabled(true);
         finish();
     }

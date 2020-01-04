@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
@@ -12,20 +13,136 @@
         android:paddingTop="56dp"
         android:paddingRight="24dp">
 
+        <TextView
+            android:id="@+id/title_main"
+            android:layout_width="334dp"
+            android:layout_height="wrap_content"
+            android:text="Student Identification Card"
+            android:textAlignment="center"
+            android:textColor="#FFC107"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="57dp" />
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_width="128dp"
+            android:layout_height="111dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:src="@drawable/pwr" />
 
-        <TextView
-            android:id="@+id/userTextView"
+        <androidx.legacy.widget.Space
             android:layout_width="match_parent"
-            android:layout_height="139dp"
-            android:text="None"
-            android:textSize="30sp" />
+            android:layout_height="57dp" />
 
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/first_name"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="First name:"
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/first_name_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp" >
+
+            <TextView
+                android:id="@+id/last_name"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Last name:"
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/last_name_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+
+        </TableRow>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp" >
+
+            <TextView
+                android:id="@+id/index"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Index:"
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/index_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+
+        </TableRow>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp" >
+
+            <TextView
+                android:id="@+id/card_number"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Card number:"
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/card_number_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="viewStart"
+                android:textSize="24sp" />
+
+        </TableRow>
     </LinearLayout>
-
 </ScrollView>

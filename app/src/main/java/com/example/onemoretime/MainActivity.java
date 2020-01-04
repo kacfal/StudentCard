@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +22,10 @@ public class MainActivity extends Activity {
     public String email;
     public String uid;
 
-    @BindView(R.id.userTextView) TextView textView;
+    @BindView(R.id.first_name_edit) TextView first_name_edit;
+    @BindView(R.id.last_name_edit) TextView last_name_edit;
+    @BindView(R.id.index_edit) TextView index_edit;
+    @BindView(R.id.card_number_edit) TextView card_number_edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -58,13 +62,14 @@ public class MainActivity extends Activity {
     }
 
     private void setUserDataOnTextView(){
+        first_name_edit = (TextView) findViewById(R.id.first_name_edit);
+        last_name_edit = (TextView) findViewById(R.id.last_name_edit);
+        index_edit = (TextView) findViewById(R.id.index_edit);
+        card_number_edit = (TextView) findViewById(R.id.card_number_edit);
 
-        if(name != null) {
-            textView = (TextView) findViewById(R.id.userTextView);
-
-            String someText = "name: " + name + "\nlastName: " + lastName + "\nindex: "
-                    + index + "\nemail: " + email + "\nuid: " + uid;
-            textView.setText(someText);
-        }
+        first_name_edit.setText(name);
+        last_name_edit.setText(lastName);
+        index_edit.setText(index);
+        card_number_edit.setText(uid);
     }
 }

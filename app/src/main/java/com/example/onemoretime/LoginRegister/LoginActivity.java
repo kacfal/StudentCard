@@ -68,6 +68,43 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+    public void getUser(String token){
+        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/user/";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, null,
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.e("_name: ", response.getString("first_name"));
+                            onLoginSuccess(
+                                    response.getString("first_name"),
+                                    response.getString("last_name"),
+                                    response.getString("username"),
+                                    response.getString("email"),
+                                    response.getString("uid"));
+
+                        } catch (JSONException e) {
+                            Log.e("Error: ", "Invalid JSON Object.");
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error: ", error.toString());
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", " Token " + token);
+                Log.e("json: ", headers.toString());
+                return headers;
+            }};
+        requestQueue.add(jsonObjectRequest);
+    }
+
     public void login() {
         if (!validate()) {
             onLoginFailed();
@@ -120,44 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void run() {
                         progressDialog.dismiss();
                     }
-                }, 60);
-    }
-
-
-    public void getUser(String token){
-        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/user/";
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, null,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.e("_name: ", response.getString("first_name"));
-                            onLoginSuccess(
-                                    response.getString("first_name"),
-                                    response.getString("last_name"),
-                                    response.getString("username"),
-                                    response.getString("email"),
-                                    response.getString("uid"));
-
-                        } catch (JSONException e) {
-                            Log.e("Error: ", "Invalid JSON Object.");
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Error: ", error.toString());
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", " Token " + token);
-                Log.e("json: ", headers.toString());
-                return headers;
-            }};
-        requestQueue.add(jsonObjectRequest);
+                }, 900);
     }
 
     @Override

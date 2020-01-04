@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,6 +24,9 @@ import com.example.onemoretime.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,8 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
-        Log.d(TAG, "Login");
-
         if (!validate()) {
             onLoginFailed();
             return;
@@ -96,16 +98,11 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Intent intentResponse = new Intent();
-
                         try {
-                            intentResponse.putExtra("token", response.getString("key"));
+                            getUser(response.getString("key"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        setResult(RESULT_OK, intentResponse);
-                        Log.e("Response: ", response.toString());
-                        onLoginSuccess();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -126,17 +123,42 @@ public class LoginActivity extends AppCompatActivity {
                 }, 60);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_SIGNUP) {
-//            if (resultCode == RESULT_OK) {
-//
-//                // TODO: Implement successful signup logic here
-//                // By default we just finish the Activity and log them in automatically
-//                this.finish();
-//            }
-//        }
-//    }
+
+    public void getUser(String token){
+        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/user/";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, null,
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.e("_name: ", response.getString("first_name"));
+                            onLoginSuccess(
+                                    response.getString("first_name"),
+                                    response.getString("last_name"),
+                                    response.getString("username"),
+                                    response.getString("email"),
+                                    response.getString("uid"));
+
+                        } catch (JSONException e) {
+                            Log.e("Error: ", "Invalid JSON Object.");
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error: ", error.toString());
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", " Token " + token);
+                Log.e("json: ", headers.toString());
+                return headers;
+            }};
+        requestQueue.add(jsonObjectRequest);
+    }
 
     @Override
     public void onBackPressed() {
@@ -144,9 +166,15 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
-        Intent anotherIntent = new Intent(this, MainActivity.class);
-        startActivityForResult(anotherIntent, 1);
+    public void onLoginSuccess(String name, String lastName, String index, String email, String uid) {
+
+        Intent anotherIntent = new Intent(getBaseContext(), MainActivity.class);
+        anotherIntent.putExtra("first_name", name);
+        anotherIntent.putExtra("last_name", lastName);
+        anotherIntent.putExtra("username", index);
+        anotherIntent.putExtra("email", email);
+        anotherIntent.putExtra("uid", uid);
+        startActivity(anotherIntent);
         loginButton.setEnabled(true);
         finish();
     }

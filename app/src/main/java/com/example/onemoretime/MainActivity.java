@@ -3,15 +3,12 @@ package com.example.onemoretime;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.onemoretime.LoginRegister.LoginActivity;
+
 import butterknife.BindView;
 
 public class MainActivity extends Activity {
@@ -26,6 +23,7 @@ public class MainActivity extends Activity {
     @BindView(R.id.last_name_edit) TextView last_name_edit;
     @BindView(R.id.index_edit) TextView index_edit;
     @BindView(R.id.card_number_edit) TextView card_number_edit;
+    @BindView(R.id.logout) TextView logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,26 +37,15 @@ public class MainActivity extends Activity {
         uid = getIntent().getStringExtra("uid");
 
         setUserDataOnTextView();
-    }
+        logout = (TextView) findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_logout) {
-            Toast.makeText(this, "Logout",
-                    Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
     }
 
     private void setUserDataOnTextView(){

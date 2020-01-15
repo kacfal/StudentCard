@@ -19,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.electronicstudentid.MainActivity;
+import com.example.electronicstudentid.MainViewActivity;
 import com.example.electronicstudentid.R;
 
 import org.json.JSONException;
@@ -161,13 +161,13 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // disable going back to the MainActivity
+        // disable going back to the MainViewActivity
         moveTaskToBack(true);
     }
 
     public void onLoginSuccess(String name, String lastName, String index, String email, String uid) {
 
-        Intent anotherIntent = new Intent(getBaseContext(), MainActivity.class);
+        Intent anotherIntent = new Intent(getBaseContext(), MainViewActivity.class);
         anotherIntent.putExtra("first_name", name);
         anotherIntent.putExtra("last_name", lastName);
         anotherIntent.putExtra("username", index);

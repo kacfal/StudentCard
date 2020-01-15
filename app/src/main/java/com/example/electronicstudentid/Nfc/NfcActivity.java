@@ -81,18 +81,20 @@ public class NfcActivity extends AppCompatActivity {
 
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this, 0, new Intent(
+                        this, getClass()).addFlags(
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED), new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)}, techList);
+        nfcAdapter.enableForegroundDispatch(
+                this, pendingIntent, new IntentFilter[]{
+                        new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
+                        new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)}, techList);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        /**
-         * It's important, that the activity is in the foreground (resumed). Otherwise
-         * an IllegalStateException is thrown.
-         */
         if (readTag) {
             enableNfcForegroundDispatch();
         }
@@ -100,9 +102,6 @@ public class NfcActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        /**
-         * Call this before onPause, otherwise an IllegalArgumentException is thrown as well.
-         */
         super.onPause();
 
         NfcAdapter.getDefaultAdapter(this).disableForegroundDispatch(this);
@@ -111,13 +110,6 @@ public class NfcActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        /**
-         * This method gets called, when a new Intent gets associated with the current activity instance.
-         * Instead of creating a new activity, onNewIntent will be called. For more information have a look
-         * at the documentation.
-         *
-         * In our case this method gets called, when the user attaches a Tag to the device.
-         */
         handleIntent(intent);
     }
 
@@ -125,6 +117,15 @@ public class NfcActivity extends AppCompatActivity {
     protected void onStop() {
         unregisterReceiver(mReceiver);
         super.onStop();
+    }
+
+    public String getTagID(Tag tag) {
+        byte[] tagId = tag.getId();
+        String id = "";
+        for (int i = 0; i < tagId.length; i++) {
+            id += Integer.toHexString(tagId[i] & 0xFF) + "";
+        }
+        return id;
     }
 
     private void handleIntent(Intent intent) {
@@ -137,10 +138,9 @@ public class NfcActivity extends AppCompatActivity {
             if (tag == null) {
                 Toast.makeText(this, "Try again.", Toast.LENGTH_SHORT).show();
             } else {
-                TagHandler tagHandler = new TagHandler(tag);
                 Intent intent1 = new Intent();
 
-                intent1.putExtra("tag", tagHandler.getTagID());
+                intent1.putExtra("tag", getTagID(tag));
                 setResult(RESULT_OK, intent1);
 
                 Toast.makeText(this, "Student Card was registered.",

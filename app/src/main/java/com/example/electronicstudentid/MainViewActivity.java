@@ -11,7 +11,7 @@ import com.example.electronicstudentid.LoginRegister.LoginActivity;
 
 import butterknife.BindView;
 
-public class MainActivity extends Activity {
+public class MainViewActivity extends Activity {
     RequestQueue requestQueue;
     public String name;
     public String lastName;

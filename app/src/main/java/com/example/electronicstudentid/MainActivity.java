@@ -1,4 +1,4 @@
-package com.example.onemoretime;
+package com.example.electronicstudentid;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.onemoretime.LoginRegister.LoginActivity;
+import com.example.electronicstudentid.LoginRegister.LoginActivity;
 
 import butterknife.BindView;
 

@@ -1,4 +1,4 @@
-package com.example.onemoretime.Nfc;
+package com.example.electronicstudentid.Nfc;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -16,7 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.onemoretime.R;
+import com.example.electronicstudentid.R;
 
 public class NfcActivity extends AppCompatActivity {
     public Tag tag = null;

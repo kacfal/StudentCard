@@ -1,4 +1,4 @@
-package com.example.onemoretime;
+package com.example.electronicstudentid;
 
 import org.junit.Test;
 

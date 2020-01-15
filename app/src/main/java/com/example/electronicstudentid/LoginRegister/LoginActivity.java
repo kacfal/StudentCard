@@ -1,4 +1,4 @@
-package com.example.onemoretime.LoginRegister;
+package com.example.electronicstudentid.LoginRegister;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,8 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.onemoretime.MainActivity;
-import com.example.onemoretime.R;
+import com.example.electronicstudentid.MainActivity;
+import com.example.electronicstudentid.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

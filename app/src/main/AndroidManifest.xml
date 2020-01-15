@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.onemoretime">
+    package="com.example.electronicstudentid">
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,13 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"  android:theme="@style/AppTheme.Dark"/>
-        <activity android:name=".LoginRegister.LoginActivity" android:theme="@style/AppTheme.Dark">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".MainActivity"  android:theme="@style/AppTheme.Dark">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".LoginRegister.LoginActivity" android:theme="@style/AppTheme.Dark">
+
         </activity>
         <activity android:name=".LoginRegister.SignUpActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name=".Nfc.NfcActivity" android:theme="@style/AppTheme.Dark" />

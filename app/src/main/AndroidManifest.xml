@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginRegister.SignUpActivity" android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".LoginRegister.RegisterActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name=".Nfc.NfcActivity" android:theme="@style/AppTheme.Dark" />
     </application>
 </manifest>

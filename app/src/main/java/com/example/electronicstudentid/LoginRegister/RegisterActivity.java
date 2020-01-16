@@ -27,7 +27,7 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SignUpActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     String name;
     String lastName;
@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
         studentCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignUpActivity.this, NfcActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, NfcActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
@@ -104,7 +104,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
         signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this,
+        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");

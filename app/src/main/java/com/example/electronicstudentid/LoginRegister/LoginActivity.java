@@ -32,14 +32,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
     RequestQueue requestQueue;
-    @BindView(R.id.input_index) EditText indexText;
-    @BindView(R.id.input_password) EditText passwordText;
-    @BindView(R.id.btn_login) Button loginButton;
-    @BindView(R.id.link_signup) TextView signupLink;
+    @BindView(R.id.input_index)
+    EditText indexText;
+    @BindView(R.id.input_password)
+    EditText passwordText;
+    @BindView(R.id.btn_login)
+    Button loginButton;
+    @BindView(R.id.link_signup)
+    TextView signupLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         requestQueue = Volley.newRequestQueue(this);
-
-        loginButton = (Button) findViewById(R.id.btn_login);
+        loginButton = findViewById(R.id.btn_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -56,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-        signupLink = (TextView) findViewById(R.id.link_signup);
+        signupLink = findViewById(R.id.link_signup);
         signupLink.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -67,22 +69,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-    public void getUser(String token){
+    public void getUser(String token) {
         String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/user/";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, null,
                 new Response.Listener<JSONObject>() {
                     public void onResponse(JSONObject response) {
                         try {
-                            Log.e("_name: ", response.getString("first_name"));
                             onLoginSuccess(
                                     response.getString("first_name"),
                                     response.getString("last_name"),
                                     response.getString("username"),
                                     response.getString("email"),
                                     response.getString("uid"));
-
                         } catch (JSONException e) {
                             Log.e("Error: ", "Invalid JSON Object.");
                         }
@@ -92,15 +91,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error: ", error.toString());
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
                 headers.put("Authorization", " Token " + token);
-                Log.e("json: ", headers.toString());
                 return headers;
-            }};
+            }
+        };
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -145,8 +144,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 onLoginFailed();
                 Log.e("Error: ", error.toString());
-                Log.e("json: ", json.toString());
-
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -166,7 +163,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess(String name, String lastName, String index, String email, String uid) {
-
         Intent anotherIntent = new Intent(getBaseContext(), MainViewActivity.class);
         anotherIntent.putExtra("first_name", name);
         anotherIntent.putExtra("last_name", lastName);
@@ -180,14 +176,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         loginButton.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
-        indexText = (EditText) findViewById(R.id.input_index);
-        passwordText = (EditText) findViewById(R.id.input_password);
+        indexText = findViewById(R.id.input_index);
+        passwordText = findViewById(R.id.input_password);
 
         String index = indexText.getText().toString();
         String password = passwordText.getText().toString();
@@ -198,14 +193,12 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             indexText.setError(null);
         }
-
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
             passwordText.setError(null);
         }
-
         return valid;
     }
 }

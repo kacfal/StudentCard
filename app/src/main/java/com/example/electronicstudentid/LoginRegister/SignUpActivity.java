@@ -36,24 +36,30 @@ public class SignUpActivity extends AppCompatActivity {
     String password;
     String uid;
 
-    @BindView(R.id.input_name) EditText nameText;
-    @BindView(R.id.input_last_name) EditText lastNameText;
-    @BindView(R.id.input_name) EditText indexText;
-    @BindView(R.id.input_email) EditText emailText;
-    @BindView(R.id.input_password) EditText passwordText;
-    @BindView(R.id.btn_signup) Button signupButton;
-    @BindView(R.id.link_login) TextView loginLink;
-    @BindView(R.id.btn_student_card) Button studentCard;
+    @BindView(R.id.input_name)
+    EditText nameText;
+    @BindView(R.id.input_last_name)
+    EditText lastNameText;
+    @BindView(R.id.input_name)
+    EditText indexText;
+    @BindView(R.id.input_email)
+    EditText emailText;
+    @BindView(R.id.input_password)
+    EditText passwordText;
+    @BindView(R.id.btn_signup)
+    Button signupButton;
+    @BindView(R.id.link_login)
+    TextView loginLink;
+    @BindView(R.id.btn_student_card)
+    Button studentCard;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         requestQueue = Volley.newRequestQueue(this);
-
         ButterKnife.bind(this);
-
-        studentCard = (Button) findViewById(R.id.btn_student_card);
+        studentCard = findViewById(R.id.btn_student_card);
         studentCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,20 +67,17 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
-
-        signupButton = (Button) findViewById(R.id.btn_signup);
+        signupButton = findViewById(R.id.btn_signup);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signup();
             }
         });
-
-        loginLink = (TextView) findViewById(R.id.link_login);
+        loginLink = findViewById(R.id.link_login);
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
                 finish();
             }
         });
@@ -83,7 +86,6 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 uid = data.getStringExtra("tag");
@@ -100,7 +102,6 @@ public class SignUpActivity extends AppCompatActivity {
             onSignupFailed();
             return;
         }
-
         signupButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this,
@@ -127,7 +128,6 @@ public class SignUpActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("Response: ", response.toString());
                         onSignupSuccess();
                     }
                 }, new Response.ErrorListener() {
@@ -135,8 +135,6 @@ public class SignUpActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 onSignupFailed();
                 Log.e("Error: ", error.toString());
-                Log.e("json: ", json.toString());
-
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -165,12 +163,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     public boolean validate() {
         boolean valid = true;
-
-        nameText = (EditText) findViewById(R.id.input_name);
-        lastNameText = (EditText) findViewById(R.id.input_last_name);
-        indexText = (EditText) findViewById(R.id.input_index);
-        emailText = (EditText) findViewById(R.id.input_email);
-        passwordText = (EditText) findViewById(R.id.input_password);
+        nameText = findViewById(R.id.input_name);
+        lastNameText = findViewById(R.id.input_last_name);
+        indexText = findViewById(R.id.input_index);
+        emailText = findViewById(R.id.input_email);
+        passwordText = findViewById(R.id.input_password);
 
         name = nameText.getText().toString();
         lastName = lastNameText.getText().toString();
@@ -184,35 +181,30 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             nameText.setError(null);
         }
-
         if (lastName.isEmpty() || lastName.length() < 3) {
             lastNameText.setError("at least 3 characters");
             valid = false;
         } else {
             lastNameText.setError(null);
         }
-
         if (index.isEmpty() || index.length() == 7) {
             indexText.setError("Exactly 6 characters");
             valid = false;
         } else {
             indexText.setError(null);
         }
-
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("enter a valid email address");
             valid = false;
         } else {
             emailText.setError(null);
         }
-
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
             passwordText.setError(null);
         }
-
         if (uid.isEmpty()) {
             valid = false;
             Toast.makeText(this, "You have to register your Student Card.",

@@ -13,13 +13,21 @@ import android.nfc.tech.NfcBarcode;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.electronicstudentid.R;
+
+import butterknife.BindView;
 
 public class NfcActivity extends AppCompatActivity {
     public Tag tag = null;
+    @BindView(R.id.textView)
+    TextView textView;
+    private boolean readTag = true;
+
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -30,43 +38,35 @@ public class NfcActivity extends AppCompatActivity {
                         NfcAdapter.STATE_OFF);
                 switch (state) {
                     case NfcAdapter.STATE_OFF:
-                        Log.d("null", "STATE_OFF");
                         nfcDetected();
                     case NfcAdapter.STATE_ON:
-                        Log.d("null", "STATE_ON");
                         nfcDetected();
                 }
             }
         }
     };
-    private boolean readTag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_nfc);
         nfcDetected();
         IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
         this.registerReceiver(mReceiver, filter);
     }
 
-    private void chooseContentView(NfcAdapter mNfcAdapter) {
-
-        if (tag == null && mNfcAdapter.isEnabled()) {
-            setContentView(R.layout.activity_nfc);
-        } else {
-            setContentView(R.layout.activity_main);
-        }
-    }
-
     private void nfcDetected() {
         NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        textView = findViewById(R.id.textView);
 
         if (!mNfcAdapter.isEnabled()) {
             Toast.makeText(this, "NFC is disabled.", Toast.LENGTH_LONG).show();
-            chooseContentView(mNfcAdapter);
+            textView.setText("Keep your student card near the NFC reader (back of the phone)");
+
         } else {
             Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
-            chooseContentView(mNfcAdapter);
+            textView.setText("NFC is disabled. You should turn on NFC on your phone");
+
         }
     }
 
@@ -92,34 +92,7 @@ public class NfcActivity extends AppCompatActivity {
                         new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)}, techList);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (readTag) {
-            enableNfcForegroundDispatch();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        NfcAdapter.getDefaultAdapter(this).disableForegroundDispatch(this);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIntent(intent);
-    }
-
-    @Override
-    protected void onStop() {
-        unregisterReceiver(mReceiver);
-        super.onStop();
-    }
-
-    public String getTagID(Tag tag) {
+    private String getTagID(Tag tag) {
         byte[] tagId = tag.getId();
         String id = "";
         for (int i = 0; i < tagId.length; i++) {
@@ -128,8 +101,9 @@ public class NfcActivity extends AppCompatActivity {
         return id;
     }
 
-    private void handleIntent(Intent intent) {
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         String action = intent.getAction();
         if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
@@ -149,6 +123,27 @@ public class NfcActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (readTag) {
+            enableNfcForegroundDispatch();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        NfcAdapter.getDefaultAdapter(this).disableForegroundDispatch(this);
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(mReceiver);
+        super.onStop();
     }
 
 }

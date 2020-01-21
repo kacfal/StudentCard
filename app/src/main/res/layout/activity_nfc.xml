@@ -5,29 +5,30 @@
 android:layout_height="fill_parent"
 android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:orientation="vertical"
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="56dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <ImageView android:src="@drawable/student_card_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center_horizontal" />
+
+    <androidx.legacy.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:layout_height="20dp" />
+z
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="139dp"
+        android:text=""
+        android:textSize="30sp" />
 
-        <ImageView android:src="@drawable/student_card_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
-            android:layout_gravity="center_horizontal" />
-
-        <androidx.legacy.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="139dp"
-            android:text=""
-            android:textSize="30sp" />
-    </LinearLayout>
+</LinearLayout>
 </ScrollView>

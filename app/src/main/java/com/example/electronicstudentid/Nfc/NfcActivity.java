@@ -61,11 +61,11 @@ public class NfcActivity extends AppCompatActivity {
 
         if (!mNfcAdapter.isEnabled()) {
             Toast.makeText(this, "NFC is disabled.", Toast.LENGTH_LONG).show();
-            textView.setText("Keep your student card near the NFC reader (back of the phone)");
+            textView.setText("NFC is disabled. You should turn on NFC on your phone");
 
         } else {
             Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
-            textView.setText("NFC is disabled. You should turn on NFC on your phone");
+            textView.setText("Keep your student card near the NFC reader (back of the phone)");
 
         }
     }

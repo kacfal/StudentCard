@@ -76,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     public void onResponse(JSONObject response) {
                         try {
+                            Log.e("Response get Usert: ", "" + response);
+
                             onLoginSuccess(
                                     response.getString("first_name"),
                                     response.getString("last_name"),
@@ -135,6 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             getUser(response.getString("key"));
+                            Log.e("Response login: ", "" + response);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

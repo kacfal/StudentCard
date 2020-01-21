@@ -129,6 +129,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         onSignupSuccess();
+                        Log.e("Response Register: ", "" + response);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -156,8 +158,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(this, "Sing up failed !", Toast.LENGTH_LONG).show();
-
+        if(uid == null){
+            Toast.makeText(this, "You have to register your Student Card.",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Sing up failed !", Toast.LENGTH_LONG).show();
+        }
         signupButton.setEnabled(true);
     }
 
@@ -205,10 +212,8 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             passwordText.setError(null);
         }
-        if (uid.isEmpty()) {
+        if (uid == null) {
             valid = false;
-            Toast.makeText(this, "You have to register your Student Card.",
-                    Toast.LENGTH_SHORT).show();
         }
         return valid;
     }

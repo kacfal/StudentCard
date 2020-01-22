@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void getUser(String token) {
-        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/user/";
+        String baseUrl = "http://192.168.0.105:8000/api/v1/rest-auth/user/";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, baseUrl, null,
                 new Response.Listener<JSONObject>() {
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         String index = indexText.getText().toString();
         String password = passwordText.getText().toString();
 
-        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/login/";
+        String baseUrl = "http://192.168.0.105:8000/api/v1/rest-auth/login/";
         JSONObject json = new JSONObject();
 
         try {

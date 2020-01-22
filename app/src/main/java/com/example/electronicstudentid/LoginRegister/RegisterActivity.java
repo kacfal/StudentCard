@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String baseUrl = "http://192.168.43.95:8000/api/v1/rest-auth/registration/";
+        String baseUrl = "http://192.168.0.105:8000/api/v1/rest-auth/registration/";
         JSONObject json = new JSONObject();
 
         try {
